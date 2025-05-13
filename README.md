@@ -180,7 +180,7 @@ cp .env.template .env
 ```
 OPENAI_API_KEY=your-openai-api-key-here
 TAVILY_API_KEY=your-tavily-api-key-here
-API_URL=http://localhost:8000
+API_URL=http://localhost:8001
 ```
 
 ## 📱 사용 방법
