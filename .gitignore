@@ -1,0 +1,56 @@
+# 환경 변수 및 시크릿
+.env
+.env.*
+
+# 가상환경
+venv/
+env/
+.venv/
+ENV/
+
+# 파이썬 캐시 파일
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Chroma DB 데이터
+chroma_db/
+
+# 로그 파일
+logs/
+*.log
+
+# 시스템 파일
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 에디터 설정
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 임시 파일
+*.tmp
+*.temp
+temp/
+tmp/
+
+# 데이터 파일 (필요한 경우 주석 처리)
+# 대용량 제품 데이터를 제외하려면 주석을 해제하세요
+product_data_10k.json
+
+# 개발 환경 관련
+.ipynb_checkpoints/
+*.ipynb
+
+# 빌드 산출물
+build/
+dist/
+*.egg-info/
