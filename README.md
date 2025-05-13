@@ -133,7 +133,7 @@ setup.bat
 ```
 OPENAI_API_KEY=your-openai-api-key-here
 TAVILY_API_KEY=your-tavily-api-key-here
-API_URL=http://localhost:8000
+API_URL=http://localhost:8001
 ```
 
 ### 수동 설치 (모든 OS)
@@ -142,7 +142,7 @@ API_URL=http://localhost:8000
 
 ```bash
 git clone <repository-url>  # 또는 ZIP 파일 다운로드 및 압축 해제
-cd VectorDB_10k_실습
+cd <경로>
 ```
 
 2. **가상환경 생성 및 활성화**

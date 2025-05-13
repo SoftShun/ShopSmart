@@ -288,9 +288,12 @@ def render_product_card(product: Dict[str, Any], index: int = 0, show_details: b
         col1, col2 = st.columns([1, 3])
         
         with col1:
-            # 이미지 (임의로 생성)
-            st.image(f"https://picsum.photos/seed/{product['product_id']}/200/200", 
-                    use_container_width=True)
+            # 이미지 (크기 축소)
+            st.markdown("<div style='height: 30px; display: flex; align-items: center; justify-content: center;'>", unsafe_allow_html=True)
+            # 이미지 URL의 크기도 더 작게 요청 (200x200 대신 150x150)
+            st.image(f"https://picsum.photos/seed/{product['product_id']}/150/150", 
+                    width=260)  # 표시 크기도 더 작게 제한
+            st.markdown("</div>", unsafe_allow_html=True)
         
         with col2:
             # 제품명 및 기본 정보
@@ -352,19 +355,39 @@ def render_product_card(product: Dict[str, Any], index: int = 0, show_details: b
                         st.session_state.view_mode = "detail"
                         st.rerun()
             
-            # 유사 제품 버튼
-            with col_similar:
-                if st.button("유사 제품", key=f"similar_{product['product_id']}"):
-                    with st.spinner("유사한 제품 검색 중..."):
-                        similar_results = find_similar_products(product['product_id'])
+        # 유사 제품 버튼
+        with col_similar:
+            if st.button("유사 제품", key=f"similar_{product['product_id']}"):
+                with st.spinner("유사한 제품 검색 중..."):
+                    similar_results = find_similar_products(product['product_id'])
+                    
+                    if similar_results.get("similar_products"):
+                        st.subheader(f"{product['product_name']}와(과) 유사한 제품")
                         
-                        if similar_results.get("similar_products"):
-                            st.subheader(f"{product['product_name']}와(과) 유사한 제품")
-                            
-                            for i, similar in enumerate(similar_results["similar_products"], 1):
-                                render_product_card(similar, i, show_details=False)
-                        else:
-                            st.info(similar_results.get("message", "유사한 제품을 찾을 수 없습니다."))
+                        # 이 부분을 수정: render_product_card를 다시 호출하지 않음
+                        for i, similar in enumerate(similar_results["similar_products"], 1):
+                            with st.container():
+                                st.markdown(f"### {i}. {similar['product_name']}")
+                                
+                                # 기본 정보를 간단히 표시
+                                st.markdown(f"**가격:** {format_price(similar['price'])}원 | **평점:** {'⭐' * int(similar['rating'])} ({similar['rating']})")
+                                st.markdown(f"**카테고리:** {similar['category']} | **브랜드:** {similar['brand']}")
+                                st.markdown(f"**설명:** {similar['description']}")
+                                
+                                # 유사도 점수 표시
+                                if "similarity_score" in similar and similar["similarity_score"] is not None:
+                                    similarity_percentage = similar["similarity_score"] * 100
+                                    st.markdown(f"**유사도:** {similarity_percentage:.1f}%")
+                                
+                                # 특징 태그가 있으면 표시
+                                if "feature_tags" in similar and similar["feature_tags"]:
+                                    tags_str = ", ".join([f"#{tag}" for tag in similar["feature_tags"][:8]])
+                                    st.markdown(f"**특징:** {tags_str}")
+                                
+                                # 구분선 추가
+                                st.markdown("---")
+                    else:
+                        st.info(similar_results.get("message", "유사한 제품을 찾을 수 없습니다."))
         
         st.markdown("</div>", unsafe_allow_html=True)
 
